@@ -46,12 +46,12 @@ const DaftarLaporanPerubahan = () => {
     const statusColors: { [key: string]: string } = {
       Submitted: "bg-blue-100 text-blue-800",
       Reviewed: "bg-purple-100 text-purple-800",
-      Revision: "bg-red-100 text-red-800",
+      Revision: "bg-yellow-100 text-yellow-800",
       Approved: "bg-green-100 text-green-800",
       Scheduled: "bg-cyan-100 text-cyan-800",
       Implementing: "bg-orange-100 text-orange-800",
       Completed: "bg-emerald-100 text-emerald-800",
-      Failed: "bg-red-200 text-red-900",
+      End: "bg-gray-100 text-gray-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
   };
