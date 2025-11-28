@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Info, Check } from "lucide-react";
+import { ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
 
 const ChangeRequestDetail = () => {
@@ -218,49 +218,59 @@ const ChangeRequestDetail = () => {
           </div>
         </Card>
 
-        {/* Section 5: Status Tracking */}
+        {/* Section 5: Status Tracking - Vertical Timeline */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-6">Tracking Status</h2>
           <div className="relative">
-            {/* Progress Line */}
-            <div className="absolute top-4 left-0 right-0 h-0.5 bg-border" />
-            <div 
-              className="absolute top-4 left-0 h-0.5 bg-primary transition-all duration-300"
-              style={{ width: `${(currentStepIndex / (statusSteps.length - 1)) * 100}%` }}
-            />
-            
-            {/* Steps */}
-            <div className="relative flex justify-between">
-              {statusSteps.map((step, index) => {
-                const isCompleted = index <= currentStepIndex;
-                const isCurrent = index === currentStepIndex;
-                
-                return (
-                  <div key={step.key} className="flex flex-col items-center">
+            {statusSteps.map((step, index) => {
+              const isCompleted = index <= currentStepIndex;
+              const isCurrent = index === currentStepIndex;
+              const isLast = index === statusSteps.length - 1;
+              
+              return (
+                <div key={step.key} className="flex items-start">
+                  {/* Timeline column */}
+                  <div className="flex flex-col items-center mr-4">
+                    {/* Circle */}
                     <div 
                       className={`
-                        w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium z-10
+                        w-4 h-4 rounded-full flex-shrink-0 z-10
                         ${isCompleted 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted text-muted-foreground border-2 border-border'
+                          ? 'bg-lime-500' 
+                          : 'bg-muted border-2 border-border'
                         }
-                        ${isCurrent ? 'ring-2 ring-primary ring-offset-2' : ''}
                       `}
-                    >
-                      {isCompleted ? <Check className="h-4 w-4" /> : index + 1}
-                    </div>
-                    <span 
+                    />
+                    {/* Vertical line */}
+                    {!isLast && (
+                      <div 
+                        className={`
+                          w-0.5 h-12 
+                          ${isCompleted && index < currentStepIndex ? 'bg-lime-500' : 'bg-border'}
+                        `}
+                      />
+                    )}
+                  </div>
+                  
+                  {/* Content column */}
+                  <div className={`pb-6 ${isLast ? 'pb-0' : ''}`}>
+                    <p 
                       className={`
-                        mt-2 text-xs font-medium text-center max-w-[80px]
-                        ${isCompleted ? 'text-primary' : 'text-muted-foreground'}
+                        text-sm font-medium
+                        ${isCompleted ? 'text-foreground' : 'text-muted-foreground'}
                       `}
                     >
                       {step.label}
-                    </span>
+                    </p>
+                    {isCurrent && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Status saat ini
+                      </p>
+                    )}
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </Card>
       </div>

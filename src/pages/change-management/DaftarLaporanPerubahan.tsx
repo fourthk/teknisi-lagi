@@ -57,10 +57,10 @@ const DaftarLaporanPerubahan = () => {
   };
 
   const getScoreColor = (skor: number) => {
-    if (skor >= 80) return "bg-red-500 text-white";
-    if (skor >= 60) return "bg-orange-500 text-white";
-    if (skor >= 40) return "bg-yellow-500 text-white";
-    return "bg-green-500 text-white";
+    if (skor >= 80) return "text-red-600 font-bold";
+    if (skor >= 60) return "text-orange-600 font-bold";
+    if (skor >= 40) return "text-yellow-600 font-bold";
+    return "text-green-600 font-bold";
   };
 
   return (
@@ -95,7 +95,7 @@ const DaftarLaporanPerubahan = () => {
                     </span>
                   </td>
                   <td className="px-4 py-4 text-center">
-                    <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${getScoreColor(change.skor)}`}>
+                    <span className={`text-base ${getScoreColor(change.skor)}`}>
                       {change.skor}
                     </span>
                   </td>
