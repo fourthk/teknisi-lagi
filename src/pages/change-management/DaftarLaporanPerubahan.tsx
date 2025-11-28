@@ -12,6 +12,18 @@ import { Button } from "@/components/ui/button";
 const DaftarLaporanPerubahan = () => {
   const navigate = useNavigate();
 
+  const statusFilterOptions = [
+    { value: "all", label: "Semua Status" },
+    { value: "Submitted", label: "Submitted" },
+    { value: "Reviewed", label: "Reviewed" },
+    { value: "Revision", label: "Revision" },
+    { value: "Approved", label: "Approved" },
+    { value: "Scheduled", label: "Scheduled" },
+    { value: "Implementing", label: "Implementing" },
+    { value: "Completed", label: "Completed" },
+    { value: "End", label: "End" },
+  ];
+
   const changes = [
     {
       id: "CR-001",
@@ -40,6 +52,15 @@ const DaftarLaporanPerubahan = () => {
       skor: 92,
       tanggalDiterima: "2025-01-20",
     },
+    {
+      id: "CR-004",
+      katalog: "Database",
+      subKatalog: "PostgreSQL",
+      nama: "Database Migration & Optimization",
+      status: "Submitted",
+      skor: 65,
+      tanggalDiterima: "2025-01-22",
+    },
   ];
 
   const getStatusColor = (status: string) => {
@@ -67,7 +88,7 @@ const DaftarLaporanPerubahan = () => {
     <div>
       <h1 className="text-3xl font-bold text-foreground mb-6">Daftar Laporan Perubahan</h1>
 
-      <TableWithSearch searchPlaceholder="Cari laporan...">
+      <TableWithSearch searchPlaceholder="Cari laporan..." filterOptions={statusFilterOptions}>
         <div className="overflow-x-auto">
           <table className="w-full table-fixed">
             <thead>
@@ -113,12 +134,6 @@ const DaftarLaporanPerubahan = () => {
                           className="cursor-pointer hover:bg-muted"
                         >
                           Detail
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => navigate(`/change-management/hasil-implementasi`)}
-                          className="cursor-pointer hover:bg-muted"
-                        >
-                          Hasil Implementasi
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

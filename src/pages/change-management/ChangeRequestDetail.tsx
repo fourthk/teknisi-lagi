@@ -33,10 +33,21 @@ const ChangeRequestDetail = () => {
     estimasiWaktu: "4 jam",
     hasilInspeksi: null,
     currentStatus: "Approved",
+    approvalStatus: "Approved", // Approved, Rejected, Pending, Revision
     jadwalImplementasi: {
       tanggal: "20 Januari 2025",
       waktu: "14:00 - 18:00"
     }
+  };
+
+  const getApprovalStatusColor = (status: string) => {
+    const colors: { [key: string]: string } = {
+      Approved: "bg-green-100 text-green-800",
+      Rejected: "bg-red-100 text-red-800",
+      Pending: "bg-blue-100 text-blue-800",
+      Revision: "bg-yellow-100 text-yellow-800",
+    };
+    return colors[status] || "bg-gray-100 text-gray-800";
   };
 
   const statusSteps = [
@@ -194,12 +205,23 @@ const ChangeRequestDetail = () => {
         </Card>
 
         {/* Section 3: Persetujuan - Formal Style */}
-        <Card className="p-4 bg-blue-50 border border-blue-200">
-          <div className="flex items-center gap-3">
-            <Info className="h-5 w-5 text-blue-500 flex-shrink-0" />
-            <p className="text-sm text-blue-700">
-              Semua perubahan pada desain ini memerlukan persetujuan terpisah.
-            </p>
+        <Card className="p-6 bg-card border-border">
+          <h2 className="text-xl font-semibold text-foreground mb-4">Status Persetujuan</h2>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-muted-foreground">Status Approval:</span>
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(changeRequest.approvalStatus)}`}>
+                {changeRequest.approvalStatus}
+              </span>
+            </div>
+          </div>
+          <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border">
+            <div className="flex items-center gap-2">
+              <Info className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <p className="text-sm text-muted-foreground">
+                Semua perubahan pada desain ini memerlukan persetujuan terpisah.
+              </p>
+            </div>
           </div>
         </Card>
 
