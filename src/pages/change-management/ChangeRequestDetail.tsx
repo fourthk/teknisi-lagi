@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
 
 const ChangeRequestDetail = () => {
@@ -193,41 +193,13 @@ const ChangeRequestDetail = () => {
           )}
         </Card>
 
-        {/* Section 3: Persetujuan */}
-        <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Persetujuan</h2>
-          <div className="space-y-3">
-            {[
-              { role: "Manager IT", nama: "Budi Santoso", status: "Approved", tanggal: "2025-01-16" },
-              { role: "Kepala Divisi", nama: "Siti Rahayu", status: "Pending", tanggal: "-" },
-              { role: "Quality Assurance", nama: "Ahmad Wijaya", status: "Rejected", tanggal: "2025-01-17" },
-              { role: "Security Officer", nama: "Diana Putri", status: "Revision", tanggal: "2025-01-17" },
-            ].map((approval, index) => {
-              const getApprovalStatusColor = (status: string) => {
-                const colors: { [key: string]: string } = {
-                  Approved: "bg-green-100 text-green-800",
-                  Rejected: "bg-red-100 text-red-800",
-                  Pending: "bg-blue-100 text-blue-800",
-                  Revision: "bg-yellow-100 text-yellow-800",
-                };
-                return colors[status] || "bg-gray-100 text-gray-800";
-              };
-
-              return (
-                <div key={index} className="flex items-center justify-between p-3 border border-border rounded-lg">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{approval.role}</p>
-                    <p className="text-xs text-muted-foreground">{approval.nama}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-muted-foreground">{approval.tanggal}</span>
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getApprovalStatusColor(approval.status)}`}>
-                      {approval.status}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Section 3: Persetujuan - Formal Style */}
+        <Card className="p-4 bg-blue-50 border border-blue-200">
+          <div className="flex items-center gap-3">
+            <Info className="h-5 w-5 text-blue-500 flex-shrink-0" />
+            <p className="text-sm text-blue-700">
+              Semua perubahan pada desain ini memerlukan persetujuan terpisah.
+            </p>
           </div>
         </Card>
 
