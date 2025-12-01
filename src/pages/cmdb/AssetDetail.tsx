@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, MoreVertical } from "lucide-react";
+import { Plus, MoreVertical, ArrowLeft } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,22 +85,19 @@ const AssetDetail = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Detail CMDB</h1>
-        <div className="flex gap-4">
-          <Button 
-            className="bg-[#384E66] hover:bg-[#2F4256] text-white"
-            onClick={() => {/* Save changes */}}
-          >
-            Simpan
-          </Button>
-          <Button 
-            variant="outline" 
+        <div className="flex items-center gap-3">
+          <ArrowLeft 
+            className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
             onClick={() => navigate(-1)}
-            className="text-foreground"
-          >
-            Kembali
-          </Button>
+          />
+          <h1 className="text-3xl font-bold text-foreground">Detail CMDB</h1>
         </div>
+        <Button 
+          className="bg-[#384E66] hover:bg-[#2F4256] text-white"
+          onClick={() => {/* Save changes */}}
+        >
+          Simpan
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">

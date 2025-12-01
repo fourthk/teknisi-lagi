@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "lucide-react";
+import { Calendar, ArrowLeft } from "lucide-react";
 
 const AssetHistory = () => {
   const { id } = useParams();
@@ -67,20 +67,17 @@ const AssetHistory = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <div>
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-2">
+          <ArrowLeft 
+            className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
+            onClick={() => navigate(-1)}
+          />
           <h1 className="text-3xl font-bold text-foreground">Riwayat Aset</h1>
-          <p className="text-muted-foreground mt-2">
-            {assetInfo.bmdId} - {assetInfo.nama} ({assetInfo.kategori} / {assetInfo.subKategori})
-          </p>
         </div>
-        <Button 
-          variant="outline" 
-          onClick={() => navigate(-1)}
-          className="text-foreground"
-        >
-          Kembali
-        </Button>
+        <p className="text-muted-foreground ml-9">
+          {assetInfo.bmdId} - {assetInfo.nama} ({assetInfo.kategori} / {assetInfo.subKategori})
+        </p>
       </div>
 
       <div className="space-y-4">

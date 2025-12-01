@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Search } from "lucide-react";
+import { RefreshCw, Search, ArrowLeft } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MoreVertical } from "lucide-react";
 import {
@@ -69,15 +69,12 @@ const CategoryDetail = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-foreground">{category}</h1>
-        <Button 
-          variant="outline" 
+      <div className="flex items-center gap-3 mb-6">
+        <ArrowLeft 
+          className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
           onClick={() => navigate("/cmdb")}
-          className="text-foreground"
-        >
-          Kembali
-        </Button>
+        />
+        <h1 className="text-3xl font-bold text-foreground">{category}</h1>
       </div>
 
       <div className="space-y-4">

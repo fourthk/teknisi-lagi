@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Info } from "lucide-react";
+import { ChevronDown, Info, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
 const ChangeRequestDetail = () => {
@@ -69,11 +69,12 @@ const ChangeRequestDetail = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center gap-3 mb-6">
+        <ArrowLeft 
+          className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
+          onClick={() => navigate(-1)}
+        />
         <h1 className="text-3xl font-bold text-foreground">Detail Change Request</h1>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          Kembali
-        </Button>
       </div>
 
       <div className="space-y-6">

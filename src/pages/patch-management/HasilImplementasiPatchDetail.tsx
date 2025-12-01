@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowLeft } from "lucide-react";
 
 const HasilImplementasiPatchDetail = () => {
   const { id } = useParams();
@@ -78,11 +78,12 @@ const HasilImplementasiPatchDetail = () => {
       </Breadcrumb>
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center gap-3 mb-6">
+        <ArrowLeft 
+          className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
+          onClick={() => navigate(-1)}
+        />
         <h1 className="text-3xl font-bold text-foreground">Hasil Implementasi Patch</h1>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          Kembali
-        </Button>
       </div>
 
       {/* Patch Information Card */}
