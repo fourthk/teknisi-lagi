@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar } from "@/components/ui/calendar";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Clock, User } from "lucide-react";
 
 const JadwalImplementasi = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const navigate = useNavigate();
 
   const schedules = [
     {
@@ -34,51 +35,62 @@ const JadwalImplementasi = () => {
     },
   ];
 
+  const handleScheduleClick = (id: string) => {
+    navigate(`/change-management/detail/${id}`);
+  };
+
   return (
-    <div>
+    <div className="max-w-4xl">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Jadwal Implementasi</h1>
-        <Button className="bg-[#384E66] hover:bg-[#2F4256] text-white">
+        <h1 className="text-3xl font-bold text-foreground">Schedule</h1>
+        <Button className="bg-primary hover:bg-secondary text-primary-foreground">
           <Plus className="mr-2 h-4 w-4" />
-          Tambah Jadwal
+          Add Schedule
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Kalender</h2>
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border border-border mx-auto"
-          />
-        </Card>
+      {/* Calendar Section */}
+      <div className="mb-8">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-lg border border-border bg-card p-4 w-full pointer-events-auto"
+        />
+      </div>
 
-        <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Daftar Jadwal</h2>
-          <div className="space-y-3">
-            {schedules.map((schedule) => (
-              <div
-                key={schedule.id}
-                className="p-4 border border-border rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <p className="text-sm text-muted-foreground mb-1">{schedule.id}</p>
-                    <h3 className="font-semibold text-foreground mb-1">{schedule.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {schedule.date} • {schedule.time}
-                    </p>
-                  </div>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+      {/* Schedule List Section */}
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Schedule List</h2>
+        <div className="space-y-3">
+          {schedules.map((schedule) => (
+            <div
+              key={schedule.id}
+              onClick={() => handleScheduleClick(schedule.id)}
+              className="flex items-center justify-between p-4 bg-card rounded-lg border border-border hover:bg-muted/50 transition-colors cursor-pointer"
+            >
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-medium text-muted-foreground">{schedule.id}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
                     {schedule.status}
                   </span>
                 </div>
+                <h3 className="font-medium text-foreground truncate">{schedule.title}</h3>
+                <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3.5 w-3.5" />
+                    {schedule.date} • {schedule.time}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <User className="h-3.5 w-3.5" />
+                    {schedule.pic}
+                  </span>
+                </div>
               </div>
-            ))}
-          </div>
-        </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
