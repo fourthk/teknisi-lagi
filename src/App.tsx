@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
-import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CMDB from "./pages/CMDB";
 import CategoryDetail from "./pages/cmdb/CategoryDetail";
@@ -30,28 +29,26 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          {/* Login route outside of Layout */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Protected routes with Layout */}
-          <Route path="/" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/change-management/daftar-laporan" element={<Layout><DaftarLaporanPerubahan /></Layout>} />
-          <Route path="/change-management/detail/:id" element={<Layout><ChangeRequestDetail /></Layout>} />
-          <Route path="/change-management/buat-jadwal" element={<Layout><BuatJadwal /></Layout>} />
-          <Route path="/change-management/jadwal-implementasi" element={<Layout><JadwalImplementasi /></Layout>} />
-          <Route path="/change-management/hasil-implementasi" element={<Layout><HasilImplementasi /></Layout>} />
-          <Route path="/change-management/laporan-darurat" element={<Layout><DaftarLaporanDarurat /></Layout>} />
-          <Route path="/patch-management/daftar-laporan" element={<Layout><DaftarLaporanPerbaikan /></Layout>} />
-          <Route path="/patch-management/jadwal-implementasi" element={<Layout><JadwalImplementasiPatch /></Layout>} />
-          <Route path="/patch-management/hasil-implementasi" element={<Layout><HasilImplementasiPatch /></Layout>} />
-          <Route path="/patch-management/detail/:id" element={<Layout><HasilImplementasiPatchDetail /></Layout>} />
-          <Route path="/cmdb" element={<Layout><CMDB /></Layout>} />
-          <Route path="/cmdb/category/:category" element={<Layout><CategoryDetail /></Layout>} />
-          <Route path="/cmdb/detail/:id" element={<Layout><AssetDetail /></Layout>} />
-          <Route path="/cmdb/history/:id" element={<Layout><AssetHistory /></Layout>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/change-management/daftar-laporan" element={<DaftarLaporanPerubahan />} />
+            <Route path="/change-management/detail/:id" element={<ChangeRequestDetail />} />
+            <Route path="/change-management/buat-jadwal" element={<BuatJadwal />} />
+            <Route path="/change-management/jadwal-implementasi" element={<JadwalImplementasi />} />
+            <Route path="/change-management/hasil-implementasi" element={<HasilImplementasi />} />
+            <Route path="/change-management/laporan-darurat" element={<DaftarLaporanDarurat />} />
+            <Route path="/patch-management/daftar-laporan" element={<DaftarLaporanPerbaikan />} />
+            <Route path="/patch-management/jadwal-implementasi" element={<JadwalImplementasiPatch />} />
+            <Route path="/patch-management/hasil-implementasi" element={<HasilImplementasiPatch />} />
+            <Route path="/patch-management/detail/:id" element={<HasilImplementasiPatchDetail />} />
+            <Route path="/cmdb" element={<CMDB />} />
+            <Route path="/cmdb/category/:category" element={<CategoryDetail />} />
+            <Route path="/cmdb/detail/:id" element={<AssetDetail />} />
+            <Route path="/cmdb/history/:id" element={<AssetHistory />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
