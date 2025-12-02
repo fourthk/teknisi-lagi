@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Info, ArrowLeft } from "lucide-react";
+import { ChevronDown, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
 const ChangeRequestDetail = () => {
@@ -162,8 +162,20 @@ const ChangeRequestDetail = () => {
             <p className="text-base text-foreground mt-1">{changeRequest.hasilInspeksiText}</p>
           </div>
 
+          {/* Estimasi */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Estimasi Biaya</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.estimasiBiaya}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Estimasi Pengerjaan</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.estimasiWaktu}</p>
+            </div>
+          </div>
+
           {/* Skor Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="border border-border rounded-lg p-4">
               <label className="text-xs font-medium text-muted-foreground block mb-1">Skor Dampak</label>
               <p className="text-2xl font-bold text-foreground">{changeRequest.skorDampak}</p>
@@ -183,18 +195,6 @@ const ChangeRequestDetail = () => {
             </div>
           </div>
 
-          {/* Estimasi */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Estimasi Biaya</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimasiBiaya}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Estimasi Pengerjaan</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimasiWaktu}</p>
-            </div>
-          </div>
-
           {changeRequest.hasilInspeksi && (
             <div className="mt-4">
               <label className="text-sm font-medium text-muted-foreground">Hasil Inspeksi (Foto)</label>
@@ -205,24 +205,16 @@ const ChangeRequestDetail = () => {
           )}
         </Card>
 
-        {/* Section 3: Persetujuan - Formal Style */}
+        {/* Section 3: Persetujuan */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-4">Status Persetujuan</h2>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-muted-foreground">Status Approval:</span>
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(changeRequest.approvalStatus)}`}>
-                {changeRequest.approvalStatus}
-              </span>
-            </div>
-          </div>
-          <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border">
-            <div className="flex items-center gap-2">
-              <Info className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              <p className="text-sm text-muted-foreground">
-                Semua perubahan pada desain ini memerlukan persetujuan terpisah.
-              </p>
-            </div>
+          <div className="space-y-2">
+            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(changeRequest.approvalStatus)}`}>
+              {changeRequest.approvalStatus}
+            </span>
+            <p className="text-sm text-foreground">
+              Pengajuan disetujui oleh Kepala Seksi/Kepala Bidang/Diskominfo
+            </p>
           </div>
         </Card>
 
@@ -241,26 +233,25 @@ const ChangeRequestDetail = () => {
           </div>
         </Card>
 
-        {/* Section 5: Status Tracking - Vertical Timeline */}
+        {/* Section 5: Status Tracking - Simple Line */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-6">Tracking Status</h2>
           <div className="relative">
             {statusSteps.map((step, index) => {
               const isCompleted = index <= currentStepIndex;
-              const isCurrent = index === currentStepIndex;
               const isLast = index === statusSteps.length - 1;
               
               return (
                 <div key={step.key} className="flex items-start">
                   {/* Timeline column */}
                   <div className="flex flex-col items-center mr-4">
-                    {/* Circle */}
+                    {/* Simple dot */}
                     <div 
                       className={`
-                        w-4 h-4 rounded-full flex-shrink-0 z-10
+                        w-3 h-3 rounded-full flex-shrink-0
                         ${isCompleted 
-                          ? 'bg-lime-500' 
-                          : 'bg-muted border-2 border-border'
+                          ? 'bg-primary' 
+                          : 'bg-muted'
                         }
                       `}
                     />
@@ -268,15 +259,15 @@ const ChangeRequestDetail = () => {
                     {!isLast && (
                       <div 
                         className={`
-                          w-0.5 h-12 
-                          ${isCompleted && index < currentStepIndex ? 'bg-lime-500' : 'bg-border'}
+                          w-0.5 h-10 
+                          ${isCompleted && index < currentStepIndex ? 'bg-primary' : 'bg-muted'}
                         `}
                       />
                     )}
                   </div>
                   
                   {/* Content column */}
-                  <div className={`pb-6 ${isLast ? 'pb-0' : ''}`}>
+                  <div className={`pb-4 ${isLast ? 'pb-0' : ''}`}>
                     <p 
                       className={`
                         text-sm font-medium
@@ -285,11 +276,6 @@ const ChangeRequestDetail = () => {
                     >
                       {step.label}
                     </p>
-                    {isCurrent && (
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Status saat ini
-                      </p>
-                    )}
                   </div>
                 </div>
               );
