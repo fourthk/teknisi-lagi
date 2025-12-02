@@ -13,6 +13,7 @@ import DaftarLaporanPerubahan from "./pages/change-management/DaftarLaporanPerub
 import ChangeRequestDetail from "./pages/change-management/ChangeRequestDetail";
 import BuatJadwal from "./pages/change-management/BuatJadwal";
 import JadwalImplementasi from "./pages/change-management/JadwalImplementasi";
+import ScheduleDetail from "./pages/change-management/ScheduleDetail";
 import HasilImplementasi from "./pages/change-management/HasilImplementasi";
 import DaftarLaporanDarurat from "./pages/change-management/DaftarLaporanDarurat";
 import DaftarLaporanPerbaikan from "./pages/patch-management/DaftarLaporanPerbaikan";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/change-management/detail/:id" element={<ChangeRequestDetail />} />
             <Route path="/change-management/buat-jadwal" element={<BuatJadwal />} />
             <Route path="/change-management/jadwal-implementasi" element={<JadwalImplementasi />} />
+            <Route path="/change-management/schedule/:id" element={<ScheduleDetail />} />
             <Route path="/change-management/hasil-implementasi" element={<HasilImplementasi />} />
             <Route path="/change-management/laporan-darurat" element={<DaftarLaporanDarurat />} />
             <Route path="/patch-management/daftar-laporan" element={<DaftarLaporanPerbaikan />} />
