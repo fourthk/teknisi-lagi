@@ -20,29 +20,29 @@ const BuatJadwal = () => {
     {
       id: "CR-001",
       bmdId: "BMD-2024-001",
-      assetName: "Server Database Utama",
-      changeCategory: "Update Hardware",
+      assetName: "Main Database Server",
+      changeCategory: "Hardware Update",
       totalScore: 85,
-      estimatedCost: "Rp 15.000.000",
-      estimatedTime: "4 jam",
+      estimatedCost: "Rp 15,000,000",
+      estimatedTime: "4 hours",
     },
     {
       id: "CR-002",
       bmdId: "BMD-2024-002",
-      assetName: "Router Jaringan Lt.2",
-      changeCategory: "Konfigurasi Jaringan",
+      assetName: "Network Router Floor 2",
+      changeCategory: "Network Configuration",
       totalScore: 72,
-      estimatedCost: "Rp 5.000.000",
-      estimatedTime: "2 jam",
+      estimatedCost: "Rp 5,000,000",
+      estimatedTime: "2 hours",
     },
     {
       id: "CR-003",
       bmdId: "BMD-2024-003",
-      assetName: "Aplikasi Monitoring",
-      changeCategory: "Update Software",
+      assetName: "Monitoring Application",
+      changeCategory: "Software Update",
       totalScore: 68,
-      estimatedCost: "Rp 10.000.000",
-      estimatedTime: "3 jam",
+      estimatedCost: "Rp 10,000,000",
+      estimatedTime: "3 hours",
     },
   ];
 
@@ -52,18 +52,18 @@ const BuatJadwal = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-foreground mb-6">Buat Jadwal</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Create Schedule</h1>
 
       <div className="bg-card rounded-lg border border-border p-6 max-w-3xl">
         <form className="space-y-6">
           {/* Request ID Selection */}
           <div className="space-y-2">
             <Label htmlFor="requestId">
-              Pilih Request ID <span className="text-destructive">*</span>
+              Select Request ID <span className="text-destructive">*</span>
             </Label>
             <Select value={selectedRequest} onValueChange={setSelectedRequest}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pilih request yang sudah disetujui" />
+                <SelectValue placeholder="Select an approved request" />
               </SelectTrigger>
               <SelectContent>
                 {changeRequests.map((request) => (
@@ -79,7 +79,7 @@ const BuatJadwal = () => {
           {selectedRequestData && (
             <Card className="p-4 bg-background border-border">
               <h3 className="font-semibold text-foreground mb-3">
-                Summary Perubahan
+                Change Summary
               </h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
@@ -89,31 +89,31 @@ const BuatJadwal = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Nama Aset</p>
+                  <p className="text-muted-foreground">Asset Name</p>
                   <p className="font-medium text-foreground">
                     {selectedRequestData.assetName}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Katalog Perubahan</p>
+                  <p className="text-muted-foreground">Change Category</p>
                   <p className="font-medium text-foreground">
                     {selectedRequestData.changeCategory}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Skor Total</p>
+                  <p className="text-muted-foreground">Total Score</p>
                   <p className="font-medium text-foreground">
                     {selectedRequestData.totalScore}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Estimasi Biaya</p>
+                  <p className="text-muted-foreground">Estimated Cost</p>
                   <p className="font-medium text-foreground">
                     {selectedRequestData.estimatedCost}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Estimasi Waktu</p>
+                  <p className="text-muted-foreground">Estimated Time</p>
                   <p className="font-medium text-foreground">
                     {selectedRequestData.estimatedTime}
                   </p>
@@ -125,7 +125,7 @@ const BuatJadwal = () => {
           {/* Date Field */}
           <div className="space-y-2">
             <Label htmlFor="scheduledDate">
-              Pilih Tanggal <span className="text-destructive">*</span>
+              Select Date <span className="text-destructive">*</span>
             </Label>
             <Input id="scheduledDate" type="date" className="border-input" />
           </div>
@@ -134,13 +134,13 @@ const BuatJadwal = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="startTime">
-                Waktu Mulai <span className="text-destructive">*</span>
+                Start Time <span className="text-destructive">*</span>
               </Label>
               <Input id="startTime" type="time" className="border-input" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="endTime">
-                Waktu Selesai <span className="text-destructive">*</span>
+                End Time <span className="text-destructive">*</span>
               </Label>
               <Input id="endTime" type="time" className="border-input" />
             </div>
@@ -148,10 +148,10 @@ const BuatJadwal = () => {
 
           {/* Notes Field */}
           <div className="space-y-2">
-            <Label htmlFor="notes">Catatan</Label>
+            <Label htmlFor="notes">Notes</Label>
             <Textarea
               id="notes"
-              placeholder="Catatan tambahan (opsional)"
+              placeholder="Additional notes (optional)"
               className="border-input min-h-32"
             />
           </div>
@@ -159,13 +159,13 @@ const BuatJadwal = () => {
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button type="button" variant="ghost" className="text-foreground">
-              Batal
+              Cancel
             </Button>
             <Button
               type="submit"
               className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Simpan Jadwal
+              Save Schedule
             </Button>
           </div>
         </form>

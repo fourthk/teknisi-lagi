@@ -25,7 +25,7 @@ const JadwalImplementasiPatch = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-foreground mb-6">Jadwal Implementasi</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Implementation Schedule</h1>
 
       <div className="max-w-4xl">
         <Card className="p-6 bg-card border-border mb-6">
@@ -38,7 +38,7 @@ const JadwalImplementasiPatch = () => {
         </Card>
 
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Daftar Jadwal</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Schedule List</h2>
           <div className="space-y-3">
             {schedules.map((schedule) => (
               <div

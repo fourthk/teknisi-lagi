@@ -12,31 +12,31 @@ const ChangeRequestDetail = () => {
 
   const changeRequest = {
     crId: id,
-    katalog: "Infrastructure",
-    subKatalog: "Server",
+    catalog: "Infrastructure",
+    subCatalog: "Server",
     bmdId: "BMD-001",
-    nama: "Update Server Configuration",
-    asetTerdampak: [
-      { bmdId: "BMD-001", nama: "Server Dell PowerEdge R740" },
-      { bmdId: "BMD-045", nama: "Network Switch Cisco Catalyst" },
-      { bmdId: "BMD-089", nama: "Storage Array NetApp" },
+    name: "Update Server Configuration",
+    affectedAssets: [
+      { bmdId: "BMD-001", name: "Server Dell PowerEdge R740" },
+      { bmdId: "BMD-045", name: "Network Switch Cisco Catalyst" },
+      { bmdId: "BMD-089", name: "Storage Array NetApp" },
     ],
-    catatan: "Perubahan konfigurasi untuk meningkatkan performa dan keamanan server production.",
-    idInspeksi: "INS-2024-001",
-    tanggalInspeksi: "2024-01-16",
-    hasilInspeksiText: "Perlu dilakukan update sistem operasi dan patch keamanan",
-    skorDampak: 7,
-    skorKemungkinan: 6,
-    skorExposure: 8,
-    skorRisiko: 42,
-    estimasiBiaya: "Rp 5.000.000",
-    estimasiWaktu: "4 jam",
-    hasilInspeksi: null,
+    notes: "Configuration changes to improve production server performance and security.",
+    inspectionId: "INS-2024-001",
+    inspectionDate: "2024-01-16",
+    inspectionResult: "OS update and security patches required",
+    impactScore: 7,
+    likelihoodScore: 6,
+    exposureScore: 8,
+    riskScore: 42,
+    estimatedCost: "Rp 5,000,000",
+    estimatedTime: "4 hours",
+    inspectionImage: null,
     currentStatus: "Approved",
     approvalStatus: "Approved", // Approved, Rejected, Pending, Revision
-    jadwalImplementasi: {
-      tanggal: "20 Januari 2025",
-      waktu: "14:00 - 18:00"
+    implementationSchedule: {
+      date: "January 20, 2025",
+      time: "14:00 - 18:00"
     }
   };
 
@@ -74,41 +74,41 @@ const ChangeRequestDetail = () => {
           className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
           onClick={() => navigate(-1)}
         />
-        <h1 className="text-3xl font-bold text-foreground">Detail Change Request</h1>
+        <h1 className="text-3xl font-bold text-foreground">Change Request Detail</h1>
       </div>
 
       <div className="space-y-6">
-        {/* Section 1: Informasi Dasar */}
+        {/* Section 1: Basic Information */}
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Informasi Dasar</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Basic Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-muted-foreground">CR ID</label>
               <p className="text-base text-foreground mt-1">{changeRequest.crId}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Katalog</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.katalog}</p>
+              <label className="text-sm font-medium text-muted-foreground">Catalog</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.catalog}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Sub Katalog</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.subKatalog}</p>
+              <label className="text-sm font-medium text-muted-foreground">Sub Catalog</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.subCatalog}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">BMD ID</label>
               <p className="text-base text-foreground mt-1">{changeRequest.bmdId}</p>
             </div>
             <div className="md:col-span-2">
-              <label className="text-sm font-medium text-muted-foreground">Nama</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.nama}</p>
+              <label className="text-sm font-medium text-muted-foreground">Name</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.name}</p>
             </div>
           </div>
 
-          {/* Aset Terdampak - Collapsible Table */}
+          {/* Affected Assets - Collapsible Table */}
           <div className="mt-4">
             <Collapsible open={isAffectedOpen} onOpenChange={setIsAffectedOpen}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary">
-                Aset Terdampak ({changeRequest.asetTerdampak.length})
+                Affected Assets ({changeRequest.affectedAssets.length})
                 <ChevronDown className={`h-4 w-4 transition-transform ${isAffectedOpen ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3">
@@ -117,14 +117,14 @@ const ChangeRequestDetail = () => {
                     <thead>
                       <tr className="bg-muted">
                         <th className="px-4 py-2 text-left text-sm font-medium text-foreground">BMD ID</th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-foreground">Nama Aset</th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-foreground">Asset Name</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {changeRequest.asetTerdampak.map((asset, index) => (
+                      {changeRequest.affectedAssets.map((asset, index) => (
                         <tr key={index} className="border-t border-border">
                           <td className="px-4 py-2 text-sm text-foreground">{asset.bmdId}</td>
-                          <td className="px-4 py-2 text-sm text-foreground">{asset.nama}</td>
+                          <td className="px-4 py-2 text-sm text-foreground">{asset.name}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -135,107 +135,107 @@ const ChangeRequestDetail = () => {
           </div>
 
           <div className="mt-4">
-            <label className="text-sm font-medium text-muted-foreground">Catatan</label>
-            <p className="text-base text-foreground mt-1">{changeRequest.catatan}</p>
+            <label className="text-sm font-medium text-muted-foreground">Notes</label>
+            <p className="text-base text-foreground mt-1">{changeRequest.notes}</p>
           </div>
         </Card>
 
-        {/* Section 2: Hasil Inspeksi */}
+        {/* Section 2: Inspection Results */}
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Hasil Inspeksi</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Inspection Results</h2>
           
-          {/* ID dan Tanggal Inspeksi */}
+          {/* Inspection ID and Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">ID Inspeksi</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.idInspeksi}</p>
+              <label className="text-sm font-medium text-muted-foreground">Inspection ID</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.inspectionId}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Tanggal Inspeksi</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.tanggalInspeksi}</p>
+              <label className="text-sm font-medium text-muted-foreground">Inspection Date</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.inspectionDate}</p>
             </div>
           </div>
 
-          {/* Hasil Inspeksi Text */}
+          {/* Inspection Result Text */}
           <div className="mb-6">
-            <label className="text-sm font-medium text-muted-foreground">Hasil Inspeksi</label>
-            <p className="text-base text-foreground mt-1">{changeRequest.hasilInspeksiText}</p>
+            <label className="text-sm font-medium text-muted-foreground">Inspection Result</label>
+            <p className="text-base text-foreground mt-1">{changeRequest.inspectionResult}</p>
           </div>
 
-          {/* Estimasi */}
+          {/* Estimates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Estimasi Biaya</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimasiBiaya}</p>
+              <label className="text-sm font-medium text-muted-foreground">Estimated Cost</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.estimatedCost}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Estimasi Pengerjaan</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimasiWaktu}</p>
+              <label className="text-sm font-medium text-muted-foreground">Estimated Duration</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.estimatedTime}</p>
             </div>
           </div>
 
-          {/* Skor Cards */}
+          {/* Score Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="border border-border rounded-lg p-4">
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Skor Dampak</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.skorDampak}</p>
+              <label className="text-xs font-medium text-muted-foreground block mb-1">Impact Score</label>
+              <p className="text-2xl font-bold text-foreground">{changeRequest.impactScore}</p>
             </div>
             <div className="border border-border rounded-lg p-4">
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Skor Kemungkinan</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.skorKemungkinan}</p>
+              <label className="text-xs font-medium text-muted-foreground block mb-1">Likelihood Score</label>
+              <p className="text-2xl font-bold text-foreground">{changeRequest.likelihoodScore}</p>
             </div>
             <div className="border border-border rounded-lg p-4">
-              <label className="text-xs font-medium text-muted-foreground block mb-1">Skor Exposure</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.skorExposure}</p>
+              <label className="text-xs font-medium text-muted-foreground block mb-1">Exposure Score</label>
+              <p className="text-2xl font-bold text-foreground">{changeRequest.exposureScore}</p>
             </div>
-            {/* Highlighted Skor Resiko */}
+            {/* Highlighted Risk Score */}
             <div className="border-2 border-red-200 bg-red-50 rounded-lg p-4">
-              <label className="text-xs font-medium text-red-600 block mb-1">Skor Resiko (Exposure)</label>
-              <p className="text-2xl font-bold text-red-600">{changeRequest.skorRisiko}</p>
+              <label className="text-xs font-medium text-red-600 block mb-1">Risk Score (Exposure)</label>
+              <p className="text-2xl font-bold text-red-600">{changeRequest.riskScore}</p>
             </div>
           </div>
 
-          {changeRequest.hasilInspeksi && (
+          {changeRequest.inspectionImage && (
             <div className="mt-4">
-              <label className="text-sm font-medium text-muted-foreground">Hasil Inspeksi (Foto)</label>
+              <label className="text-sm font-medium text-muted-foreground">Inspection Photo</label>
               <div className="mt-2">
-                <img src={changeRequest.hasilInspeksi} alt="Hasil Inspeksi" className="max-w-md rounded-lg border border-border" />
+                <img src={changeRequest.inspectionImage} alt="Inspection Result" className="max-w-md rounded-lg border border-border" />
               </div>
             </div>
           )}
         </Card>
 
-        {/* Section 3: Persetujuan */}
+        {/* Section 3: Approval */}
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Status Persetujuan</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Approval Status</h2>
           <div className="space-y-2">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(changeRequest.approvalStatus)}`}>
               {changeRequest.approvalStatus}
             </span>
             <p className="text-sm text-foreground">
-              Pengajuan disetujui oleh Kepala Seksi/Kepala Bidang/Diskominfo
+              Request approved by Section Head/Division Head/IT Department
             </p>
           </div>
         </Card>
 
-        {/* Section 4: Jadwal Implementasi */}
+        {/* Section 4: Implementation Schedule */}
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Jadwal Implementasi</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Implementation Schedule</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Tanggal</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.jadwalImplementasi.tanggal}</p>
+              <label className="text-sm font-medium text-muted-foreground">Date</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.implementationSchedule.date}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Waktu</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.jadwalImplementasi.waktu}</p>
+              <label className="text-sm font-medium text-muted-foreground">Time</label>
+              <p className="text-base text-foreground mt-1">{changeRequest.implementationSchedule.time}</p>
             </div>
           </div>
         </Card>
 
         {/* Section 5: Status Tracking - Simple Line */}
         <Card className="p-6 bg-card border-border">
-          <h2 className="text-xl font-semibold text-foreground mb-6">Tracking Status</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">Status Tracking</h2>
           <div className="relative">
             {statusSteps.map((step, index) => {
               const isCompleted = index <= currentStepIndex;

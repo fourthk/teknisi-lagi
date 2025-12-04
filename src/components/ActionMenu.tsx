@@ -35,7 +35,7 @@ const ActionMenu = ({ itemId, detailPath, historyPath, editPath, onEdit }: Actio
             onClick={() => onEdit ? onEdit() : navigate(editPath!)}
             className="cursor-pointer hover:bg-muted"
           >
-            Ubah
+            Edit
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
@@ -48,7 +48,7 @@ const ActionMenu = ({ itemId, detailPath, historyPath, editPath, onEdit }: Actio
           onClick={() => navigate(historyPath)}
           className="cursor-pointer hover:bg-muted"
         >
-          Riwayat
+          History
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
