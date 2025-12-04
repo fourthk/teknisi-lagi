@@ -10,16 +10,16 @@ const ScheduleDetail = () => {
     scheduleId: id,
     requestId: "CR-001",
     bmdId: "BMD-2024-001",
-    assetName: "Server Database Utama",
-    location: "Data Center Lt. 2, Rack A-05",
-    changeCategory: "Update Hardware",
+    assetName: "Main Database Server",
+    location: "Data Center Floor 2, Rack A-05",
+    changeCategory: "Hardware Update",
     totalScore: 85,
-    estimatedCost: "Rp 15.000.000",
-    estimatedTime: "4 jam",
-    scheduledDate: "20 Januari 2024",
+    estimatedCost: "Rp 15,000,000",
+    estimatedTime: "4 hours",
+    scheduledDate: "January 20, 2024",
     startTime: "14:00",
     endTime: "18:00",
-    notes: "Pastikan backup data sudah dilakukan sebelum implementasi. Koordinasi dengan tim network untuk downtime sementara.",
+    notes: "Ensure data backup is completed before implementation. Coordinate with network team for temporary downtime.",
   };
 
   return (
@@ -52,15 +52,15 @@ const ScheduleDetail = () => {
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.bmdId}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Nama Aset</label>
+            <label className="text-sm text-muted-foreground">Asset Name</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.assetName}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Lokasi</label>
+            <label className="text-sm text-muted-foreground">Location</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.location}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Katalog Perubahan</label>
+            <label className="text-sm text-muted-foreground">Change Category</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.changeCategory}</p>
           </div>
         </div>
@@ -68,15 +68,15 @@ const ScheduleDetail = () => {
         {/* Score & Estimation */}
         <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
           <div>
-            <label className="text-sm text-muted-foreground">Skor Total</label>
+            <label className="text-sm text-muted-foreground">Total Score</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.totalScore}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Estimasi Biaya</label>
+            <label className="text-sm text-muted-foreground">Estimated Cost</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.estimatedCost}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Estimasi Waktu</label>
+            <label className="text-sm text-muted-foreground">Estimated Time</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.estimatedTime}</p>
           </div>
         </div>
@@ -84,22 +84,22 @@ const ScheduleDetail = () => {
         {/* Schedule Time */}
         <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
           <div>
-            <label className="text-sm text-muted-foreground">Tanggal</label>
+            <label className="text-sm text-muted-foreground">Date</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.scheduledDate}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Waktu Mulai</label>
+            <label className="text-sm text-muted-foreground">Start Time</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.startTime}</p>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">Waktu Selesai</label>
+            <label className="text-sm text-muted-foreground">End Time</label>
             <p className="text-base font-medium text-foreground mt-1">{scheduleData.endTime}</p>
           </div>
         </div>
 
         {/* Notes */}
         <div>
-          <label className="text-sm text-muted-foreground">Catatan</label>
+          <label className="text-sm text-muted-foreground">Notes</label>
           <p className="text-base text-foreground mt-1">{scheduleData.notes}</p>
         </div>
       </div>

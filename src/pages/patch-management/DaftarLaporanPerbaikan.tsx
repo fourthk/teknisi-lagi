@@ -15,17 +15,17 @@ const DaftarLaporanPerbaikan = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-text-dark mb-6">Daftar Laporan Perbaikan</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Patch Job</h1>
 
-      <TableWithSearch searchPlaceholder="Cari patch...">
+      <TableWithSearch searchPlaceholder="Search patches...">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-primary text-primary-foreground">
                 <th className="px-4 py-4 text-left font-semibold text-sm">Patch ID</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Nama Patch</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Tanggal</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Sistem</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">Patch Name</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">Date</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">System</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">Severity</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">Status</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">Action</th>

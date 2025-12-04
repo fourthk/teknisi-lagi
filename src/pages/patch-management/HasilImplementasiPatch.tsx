@@ -16,19 +16,19 @@ const HasilImplementasiPatch = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-text-dark mb-6">Hasil Implementasi</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-6">Implementation Results</h1>
 
-      <TableWithSearch searchPlaceholder="Cari hasil patch...">
+      <TableWithSearch searchPlaceholder="Search patch results...">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-primary text-primary-foreground">
                 <th className="px-4 py-4 text-left font-semibold text-sm">Patch ID</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Nama Patch</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Tanggal Implementasi</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">Patch Name</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">Implementation Date</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">PIC</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">Status</th>
-                <th className="px-4 py-4 text-left font-semibold text-sm">Catatan</th>
+                <th className="px-4 py-4 text-left font-semibold text-sm">Notes</th>
                 <th className="px-4 py-4 text-left font-semibold text-sm">Action</th>
               </tr>
             </thead>
