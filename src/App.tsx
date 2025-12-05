@@ -15,9 +15,13 @@ import BuatJadwal from "./pages/change-management/BuatJadwal";
 import JadwalImplementasi from "./pages/change-management/JadwalImplementasi";
 import ScheduleDetail from "./pages/change-management/ScheduleDetail";
 import HasilImplementasi from "./pages/change-management/HasilImplementasi";
+import HasilImplementasiDetail from "./pages/change-management/HasilImplementasiDetail";
 import DaftarLaporanDarurat from "./pages/change-management/DaftarLaporanDarurat";
+import EmergencyReportDetail from "./pages/change-management/EmergencyReportDetail";
 import DaftarLaporanPerbaikan from "./pages/patch-management/DaftarLaporanPerbaikan";
+import RepairReportDetail from "./pages/patch-management/RepairReportDetail";
 import JadwalImplementasiPatch from "./pages/patch-management/JadwalImplementasiPatch";
+import PatchScheduleDetail from "./pages/patch-management/PatchScheduleDetail";
 import HasilImplementasiPatch from "./pages/patch-management/HasilImplementasiPatch";
 import HasilImplementasiPatchDetail from "./pages/patch-management/HasilImplementasiPatchDetail";
 import NotFound from "./pages/NotFound";
@@ -39,11 +43,15 @@ const App = () => (
             <Route path="/change-management/jadwal-implementasi" element={<JadwalImplementasi />} />
             <Route path="/change-management/schedule/:id" element={<ScheduleDetail />} />
             <Route path="/change-management/hasil-implementasi" element={<HasilImplementasi />} />
+            <Route path="/change-management/hasil-implementasi/:id" element={<HasilImplementasiDetail />} />
             <Route path="/change-management/laporan-darurat" element={<DaftarLaporanDarurat />} />
+            <Route path="/change-management/emergency/:id" element={<EmergencyReportDetail />} />
             <Route path="/patch-management/daftar-laporan" element={<DaftarLaporanPerbaikan />} />
+            <Route path="/patch-management/repair/:id" element={<RepairReportDetail />} />
             <Route path="/patch-management/jadwal-implementasi" element={<JadwalImplementasiPatch />} />
+            <Route path="/patch-management/schedule/:id" element={<PatchScheduleDetail />} />
             <Route path="/patch-management/hasil-implementasi" element={<HasilImplementasiPatch />} />
-            <Route path="/patch-management/detail/:id" element={<HasilImplementasiPatchDetail />} />
+            <Route path="/patch-management/hasil-implementasi/:id" element={<HasilImplementasiPatchDetail />} />
             <Route path="/cmdb" element={<CMDB />} />
             <Route path="/cmdb/category/:category" element={<CategoryDetail />} />
             <Route path="/cmdb/detail/:id" element={<AssetDetail />} />

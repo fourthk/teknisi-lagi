@@ -51,7 +51,7 @@ const DaftarLaporanDarurat = () => {
                   <td className="px-4 py-4">
                     <ActionMenu
                       itemId={emergency.id}
-                      detailPath={`/change-management/emergency/detail/${emergency.id}`}
+                      detailPath={`/change-management/emergency/${emergency.id}`}
                       historyPath={`/change-management/emergency/history/${emergency.id}`}
                     />
                   </td>
