@@ -20,7 +20,7 @@ const JadwalImplementasiPatch = () => {
   ];
 
   const handleScheduleClick = (id: string) => {
-    navigate(`/patch-management/detail/${id}`);
+    navigate(`/patch-management/schedule/${id}`);
   };
 
   return (

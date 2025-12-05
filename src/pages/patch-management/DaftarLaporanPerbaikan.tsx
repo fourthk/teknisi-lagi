@@ -51,7 +51,7 @@ const DaftarLaporanPerbaikan = () => {
                   <td className="px-4 py-4">
                     <ActionMenu
                       itemId={patch.id}
-                      detailPath={`/patch-management/detail/${patch.id}`}
+                      detailPath={`/patch-management/repair/${patch.id}`}
                       historyPath={`/patch-management/history/${patch.id}`}
                     />
                   </td>

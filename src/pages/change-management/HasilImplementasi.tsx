@@ -47,7 +47,7 @@ const HasilImplementasi = () => {
                   <td className="px-4 py-4">
                     <ActionMenu
                       itemId={result.id}
-                      detailPath={`/change-management/detail/${result.id}`}
+                      detailPath={`/change-management/hasil-implementasi/${result.id}`}
                       historyPath={`/change-management/history/${result.id}`}
                     />
                   </td>
