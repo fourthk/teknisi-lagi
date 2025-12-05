@@ -304,10 +304,10 @@ const HasilImplementasiDetail = () => {
         </Card>
 
         {/* Edit CMDB Button */}
-        <div className="flex justify-end">
+        <div className="w-full">
           <Button 
             onClick={() => navigate(`/cmdb/detail/${implementationResult.bmdId}`)}
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Edit CMDB
           </Button>
