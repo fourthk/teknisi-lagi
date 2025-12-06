@@ -7,22 +7,23 @@ import Layout from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import CMDB from "./pages/CMDB";
 import CategoryDetail from "./pages/cmdb/CategoryDetail";
-import CategoryEdit from "./pages/cmdb/CategoryEdit";
-import CategoryHistory from "./pages/cmdb/CategoryHistory";
-import ChangeRequest from "./pages/change-management/ChangeRequest";
+import AssetDetail from "./pages/cmdb/AssetDetail";
+import AssetHistory from "./pages/cmdb/AssetHistory";
+import DaftarLaporanPerubahan from "./pages/change-management/DaftarLaporanPerubahan";
 import ChangeRequestDetail from "./pages/change-management/ChangeRequestDetail";
-import ChangeSchedule from "./pages/change-management/ChangeSchedule";
-import ChangeScheduleDetail from "./pages/change-management/ChangeScheduleDetail";
-import ChangeResults from "./pages/change-management/ChangeResults";
-import ChangeResultsDetail from "./pages/change-management/ChangeResultsDetail";
-import EmergencyRequest from "./pages/change-management/EmergencyRequest";
-import EmergencyRequestDetail from "./pages/change-management/EmergencyRequestDetail";
-import PatchJob from "./pages/patch-management/PatchJob";
-import PatchJobDetail from "./pages/patch-management/PatchJobDetail";
-import PatchSchedule from "./pages/patch-management/PatchSchedule";
+import BuatJadwal from "./pages/change-management/BuatJadwal";
+import JadwalImplementasi from "./pages/change-management/JadwalImplementasi";
+import ScheduleDetail from "./pages/change-management/ScheduleDetail";
+import HasilImplementasi from "./pages/change-management/HasilImplementasi";
+import HasilImplementasiDetail from "./pages/change-management/HasilImplementasiDetail";
+import DaftarLaporanDarurat from "./pages/change-management/DaftarLaporanDarurat";
+import EmergencyReportDetail from "./pages/change-management/EmergencyReportDetail";
+import DaftarLaporanPerbaikan from "./pages/patch-management/DaftarLaporanPerbaikan";
+import RepairReportDetail from "./pages/patch-management/RepairReportDetail";
+import JadwalImplementasiPatch from "./pages/patch-management/JadwalImplementasiPatch";
 import PatchScheduleDetail from "./pages/patch-management/PatchScheduleDetail";
-import PatchResults from "./pages/patch-management/PatchResults";
-import PatchResultsDetail from "./pages/patch-management/PatchResultsDetail";
+import HasilImplementasiPatch from "./pages/patch-management/HasilImplementasiPatch";
+import HasilImplementasiPatchDetail from "./pages/patch-management/HasilImplementasiPatchDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,27 +37,25 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            {/* Change Management */}
-            <Route path="/change-management/change-request" element={<ChangeRequest />} />
-            <Route path="/change-management/change-request/:id" element={<ChangeRequestDetail />} />
-            <Route path="/change-management/change-schedule" element={<ChangeSchedule />} />
-            <Route path="/change-management/change-schedule/:id" element={<ChangeScheduleDetail />} />
-            <Route path="/change-management/change-results" element={<ChangeResults />} />
-            <Route path="/change-management/change-results/:id" element={<ChangeResultsDetail />} />
-            <Route path="/change-management/emergency-request" element={<EmergencyRequest />} />
-            <Route path="/change-management/emergency-request/:id" element={<EmergencyRequestDetail />} />
-            {/* Patch Management */}
-            <Route path="/patch-management/patch-job" element={<PatchJob />} />
-            <Route path="/patch-management/patch-job/:id" element={<PatchJobDetail />} />
-            <Route path="/patch-management/patch-schedule" element={<PatchSchedule />} />
-            <Route path="/patch-management/patch-schedule/:id" element={<PatchScheduleDetail />} />
-            <Route path="/patch-management/patch-results" element={<PatchResults />} />
-            <Route path="/patch-management/patch-results/:id" element={<PatchResultsDetail />} />
-            {/* CMDB */}
+            <Route path="/change-management/daftar-laporan" element={<DaftarLaporanPerubahan />} />
+            <Route path="/change-management/detail/:id" element={<ChangeRequestDetail />} />
+            <Route path="/change-management/buat-jadwal" element={<BuatJadwal />} />
+            <Route path="/change-management/jadwal-implementasi" element={<JadwalImplementasi />} />
+            <Route path="/change-management/schedule/:id" element={<ScheduleDetail />} />
+            <Route path="/change-management/hasil-implementasi" element={<HasilImplementasi />} />
+            <Route path="/change-management/hasil-implementasi/:id" element={<HasilImplementasiDetail />} />
+            <Route path="/change-management/laporan-darurat" element={<DaftarLaporanDarurat />} />
+            <Route path="/change-management/emergency/:id" element={<EmergencyReportDetail />} />
+            <Route path="/patch-management/daftar-laporan" element={<DaftarLaporanPerbaikan />} />
+            <Route path="/patch-management/repair/:id" element={<RepairReportDetail />} />
+            <Route path="/patch-management/jadwal-implementasi" element={<JadwalImplementasiPatch />} />
+            <Route path="/patch-management/schedule/:id" element={<PatchScheduleDetail />} />
+            <Route path="/patch-management/hasil-implementasi" element={<HasilImplementasiPatch />} />
+            <Route path="/patch-management/hasil-implementasi/:id" element={<HasilImplementasiPatchDetail />} />
             <Route path="/cmdb" element={<CMDB />} />
             <Route path="/cmdb/category/:category" element={<CategoryDetail />} />
-            <Route path="/cmdb/category-edit/:id" element={<CategoryEdit />} />
-            <Route path="/cmdb/category-history/:id" element={<CategoryHistory />} />
+            <Route path="/cmdb/detail/:id" element={<AssetDetail />} />
+            <Route path="/cmdb/history/:id" element={<AssetHistory />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

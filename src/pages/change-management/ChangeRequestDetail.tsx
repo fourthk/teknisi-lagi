@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ArrowLeft } from "lucide-react";
@@ -32,7 +33,7 @@ const ChangeRequestDetail = () => {
     estimatedTime: "4 hours",
     inspectionImage: null,
     currentStatus: "Approved",
-    approvalStatus: "Approved",
+    approvalStatus: "Approved", // Approved, Rejected, Pending, Revision
     implementationSchedule: {
       date: "January 20, 2025",
       time: "14:00 - 18:00"
@@ -143,6 +144,7 @@ const ChangeRequestDetail = () => {
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-4">Inspection Results</h2>
           
+          {/* Inspection ID and Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Inspection ID</label>
@@ -154,11 +156,13 @@ const ChangeRequestDetail = () => {
             </div>
           </div>
 
+          {/* Inspection Result Text */}
           <div className="mb-6">
             <label className="text-sm font-medium text-muted-foreground">Inspection Result</label>
             <p className="text-base text-foreground mt-1">{changeRequest.inspectionResult}</p>
           </div>
 
+          {/* Estimates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Estimated Cost</label>
@@ -170,6 +174,7 @@ const ChangeRequestDetail = () => {
             </div>
           </div>
 
+          {/* Score Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="border border-border rounded-lg p-4">
               <label className="text-xs font-medium text-muted-foreground block mb-1">Impact Score</label>
@@ -183,6 +188,7 @@ const ChangeRequestDetail = () => {
               <label className="text-xs font-medium text-muted-foreground block mb-1">Exposure Score</label>
               <p className="text-2xl font-bold text-foreground">{changeRequest.exposureScore}</p>
             </div>
+            {/* Highlighted Risk Score */}
             <div className="border-2 border-red-200 bg-red-50 rounded-lg p-4">
               <label className="text-xs font-medium text-red-600 block mb-1">Risk Score (Exposure)</label>
               <p className="text-2xl font-bold text-red-600">{changeRequest.riskScore}</p>
@@ -227,7 +233,7 @@ const ChangeRequestDetail = () => {
           </div>
         </Card>
 
-        {/* Section 5: Status Tracking */}
+        {/* Section 5: Status Tracking - Simple Line */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-6">Status Tracking</h2>
           <div className="relative">
@@ -237,7 +243,9 @@ const ChangeRequestDetail = () => {
               
               return (
                 <div key={step.key} className="flex items-start">
+                  {/* Timeline column */}
                   <div className="flex flex-col items-center mr-4">
+                    {/* Simple dot */}
                     <div 
                       className={`
                         w-3 h-3 rounded-full flex-shrink-0
@@ -247,6 +255,7 @@ const ChangeRequestDetail = () => {
                         }
                       `}
                     />
+                    {/* Vertical line */}
                     {!isLast && (
                       <div 
                         className={`
@@ -257,6 +266,7 @@ const ChangeRequestDetail = () => {
                     )}
                   </div>
                   
+                  {/* Content column */}
                   <div className={`pb-4 ${isLast ? 'pb-0' : ''}`}>
                     <p 
                       className={`
