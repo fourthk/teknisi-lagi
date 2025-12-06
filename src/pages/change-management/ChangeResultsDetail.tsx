@@ -1,15 +1,16 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
-const ChangeRequestDetail = () => {
+const ChangeResultsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isAffectedOpen, setIsAffectedOpen] = useState(false);
 
-  const changeRequest = {
+  const implementationResult = {
     crId: id,
     catalog: "Infrastructure",
     subCatalog: "Server",
@@ -31,11 +32,18 @@ const ChangeRequestDetail = () => {
     estimatedCost: "Rp 5,000,000",
     estimatedTime: "4 hours",
     inspectionImage: null,
-    currentStatus: "Approved",
+    currentStatus: "Completed",
     approvalStatus: "Approved",
     implementationSchedule: {
       date: "January 20, 2025",
       time: "14:00 - 18:00"
+    },
+    implementationResult: {
+      status: "Success",
+      completedDate: "January 20, 2025",
+      completedTime: "17:45",
+      pic: "John Doe",
+      resultNotes: "Implementation completed successfully. All systems operational."
     }
   };
 
@@ -61,7 +69,7 @@ const ChangeRequestDetail = () => {
   ];
 
   const getCurrentStepIndex = () => {
-    return statusSteps.findIndex(step => step.key === changeRequest.currentStatus);
+    return statusSteps.findIndex(step => step.key === implementationResult.currentStatus);
   };
 
   const currentStepIndex = getCurrentStepIndex();
@@ -73,7 +81,7 @@ const ChangeRequestDetail = () => {
           className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
           onClick={() => navigate(-1)}
         />
-        <h1 className="text-3xl font-bold text-foreground">Change Request Detail</h1>
+        <h1 className="text-3xl font-bold text-foreground">Implementation Result Detail</h1>
       </div>
 
       <div className="space-y-6">
@@ -83,23 +91,23 @@ const ChangeRequestDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-muted-foreground">CR ID</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.crId}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.crId}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Catalog</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.catalog}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.catalog}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Sub Catalog</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.subCatalog}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.subCatalog}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">BMD ID</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.bmdId}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.bmdId}</p>
             </div>
             <div className="md:col-span-2">
               <label className="text-sm font-medium text-muted-foreground">Name</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.name}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.name}</p>
             </div>
           </div>
 
@@ -107,7 +115,7 @@ const ChangeRequestDetail = () => {
           <div className="mt-4">
             <Collapsible open={isAffectedOpen} onOpenChange={setIsAffectedOpen}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary">
-                Affected Assets ({changeRequest.affectedAssets.length})
+                Affected Assets ({implementationResult.affectedAssets.length})
                 <ChevronDown className={`h-4 w-4 transition-transform ${isAffectedOpen ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3">
@@ -120,7 +128,7 @@ const ChangeRequestDetail = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {changeRequest.affectedAssets.map((asset, index) => (
+                      {implementationResult.affectedAssets.map((asset, index) => (
                         <tr key={index} className="border-t border-border">
                           <td className="px-4 py-2 text-sm text-foreground">{asset.bmdId}</td>
                           <td className="px-4 py-2 text-sm text-foreground">{asset.name}</td>
@@ -135,7 +143,7 @@ const ChangeRequestDetail = () => {
 
           <div className="mt-4">
             <label className="text-sm font-medium text-muted-foreground">Notes</label>
-            <p className="text-base text-foreground mt-1">{changeRequest.notes}</p>
+            <p className="text-base text-foreground mt-1">{implementationResult.notes}</p>
           </div>
         </Card>
 
@@ -146,65 +154,56 @@ const ChangeRequestDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Inspection ID</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.inspectionId}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.inspectionId}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Inspection Date</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.inspectionDate}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.inspectionDate}</p>
             </div>
           </div>
 
           <div className="mb-6">
             <label className="text-sm font-medium text-muted-foreground">Inspection Result</label>
-            <p className="text-base text-foreground mt-1">{changeRequest.inspectionResult}</p>
+            <p className="text-base text-foreground mt-1">{implementationResult.inspectionResult}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Estimated Cost</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimatedCost}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.estimatedCost}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Estimated Duration</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.estimatedTime}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.estimatedTime}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="border border-border rounded-lg p-4">
               <label className="text-xs font-medium text-muted-foreground block mb-1">Impact Score</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.impactScore}</p>
+              <p className="text-2xl font-bold text-foreground">{implementationResult.impactScore}</p>
             </div>
             <div className="border border-border rounded-lg p-4">
               <label className="text-xs font-medium text-muted-foreground block mb-1">Likelihood Score</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.likelihoodScore}</p>
+              <p className="text-2xl font-bold text-foreground">{implementationResult.likelihoodScore}</p>
             </div>
             <div className="border border-border rounded-lg p-4">
               <label className="text-xs font-medium text-muted-foreground block mb-1">Exposure Score</label>
-              <p className="text-2xl font-bold text-foreground">{changeRequest.exposureScore}</p>
+              <p className="text-2xl font-bold text-foreground">{implementationResult.exposureScore}</p>
             </div>
             <div className="border-2 border-red-200 bg-red-50 rounded-lg p-4">
               <label className="text-xs font-medium text-red-600 block mb-1">Risk Score (Exposure)</label>
-              <p className="text-2xl font-bold text-red-600">{changeRequest.riskScore}</p>
+              <p className="text-2xl font-bold text-red-600">{implementationResult.riskScore}</p>
             </div>
           </div>
-
-          {changeRequest.inspectionImage && (
-            <div className="mt-4">
-              <label className="text-sm font-medium text-muted-foreground">Inspection Photo</label>
-              <div className="mt-2">
-                <img src={changeRequest.inspectionImage} alt="Inspection Result" className="max-w-md rounded-lg border border-border" />
-              </div>
-            </div>
-          )}
         </Card>
 
         {/* Section 3: Approval */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-4">Approval Status</h2>
           <div className="space-y-2">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(changeRequest.approvalStatus)}`}>
-              {changeRequest.approvalStatus}
+            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(implementationResult.approvalStatus)}`}>
+              {implementationResult.approvalStatus}
             </span>
             <p className="text-sm text-foreground">
               Request approved by Section Head/Division Head/IT Department
@@ -218,16 +217,47 @@ const ChangeRequestDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Date</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.implementationSchedule.date}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationSchedule.date}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Time</label>
-              <p className="text-base text-foreground mt-1">{changeRequest.implementationSchedule.time}</p>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationSchedule.time}</p>
             </div>
           </div>
         </Card>
 
-        {/* Section 5: Status Tracking */}
+        {/* Section 5: Implementation Result */}
+        <Card className="p-6 bg-card border-border">
+          <h2 className="text-xl font-semibold text-foreground mb-4">Implementation Result</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Status</label>
+              <p className="text-base text-foreground mt-1">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  {implementationResult.implementationResult.status}
+                </span>
+              </p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">PIC</label>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationResult.pic}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Completed Date</label>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationResult.completedDate}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Completed Time</label>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationResult.completedTime}</p>
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium text-muted-foreground">Result Notes</label>
+              <p className="text-base text-foreground mt-1">{implementationResult.implementationResult.resultNotes}</p>
+            </div>
+          </div>
+        </Card>
+
+        {/* Section 6: Status Tracking */}
         <Card className="p-6 bg-card border-border">
           <h2 className="text-xl font-semibold text-foreground mb-6">Status Tracking</h2>
           <div className="relative">
@@ -272,9 +302,19 @@ const ChangeRequestDetail = () => {
             })}
           </div>
         </Card>
+
+        {/* Edit CMDB Button */}
+        <div className="w-full">
+          <Button 
+            onClick={() => navigate(`/cmdb/category-edit/${implementationResult.bmdId}`)}
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            Edit CMDB
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ChangeRequestDetail;
+export default ChangeResultsDetail;

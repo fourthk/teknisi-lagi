@@ -28,19 +28,18 @@ const menuItems: MenuItem[] = [
   {
     name: "Change Management",
     subItems: [
-      { name: "Change Requests", path: "/change-management/daftar-laporan" },
-      { name: "Create Schedule", path: "/change-management/buat-jadwal" },
-      { name: "Schedule", path: "/change-management/jadwal-implementasi" },
-      { name: "Results", path: "/change-management/hasil-implementasi" },
-      { name: "Emergency Requests", path: "/change-management/laporan-darurat" },
+      { name: "Change Requests", path: "/change-management/change-request" },
+      { name: "Schedule", path: "/change-management/change-schedule" },
+      { name: "Results", path: "/change-management/change-results" },
+      { name: "Emergency Requests", path: "/change-management/emergency-request" },
     ],
   },
   {
     name: "Patch Management",
     subItems: [
-      { name: "Patch Job", path: "/patch-management/daftar-laporan" },
-      { name: "Schedule", path: "/patch-management/jadwal-implementasi" },
-      { name: "Results", path: "/patch-management/hasil-implementasi" },
+      { name: "Patch Job", path: "/patch-management/patch-job" },
+      { name: "Schedule", path: "/patch-management/patch-schedule" },
+      { name: "Results", path: "/patch-management/patch-results" },
     ],
   },
   {
