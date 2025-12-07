@@ -1,9 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Search } from "lucide-react";
 
 const HasilImplementasiPatch = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const results = [
     {
@@ -38,15 +44,44 @@ const HasilImplementasiPatch = () => {
     return statusStyles[status] || "bg-muted text-muted-foreground";
   };
 
+  const filteredResults = results.filter((result) => {
+    const matchesSearch =
+      result.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      result.scope.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === "all" || result.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-foreground mb-6">Implementation Results</h1>
 
       <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold">Completed Patch Jobs</CardTitle>
-        </CardHeader>
         <CardContent className="p-0">
+          {/* Search and Filter Row */}
+          <div className="flex items-center gap-4 p-4 border-b border-border">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by ID or Scope..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 bg-background border-border"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px] bg-background border-border">
+                <SelectValue placeholder="Filter by Status" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-border z-50">
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="Succeeded">Succeeded</SelectItem>
+                <SelectItem value="Partially Failed">Partially Failed</SelectItem>
+                <SelectItem value="Failed">Failed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -59,8 +94,8 @@ const HasilImplementasiPatch = () => {
                 </tr>
               </thead>
               <tbody>
-                {results.map((result) => (
-                  <tr key={result.id} className="border-b border-border">
+                {filteredResults.map((result) => (
+                  <tr key={result.id} className="border-b border-border hover:bg-muted/50">
                     <td className="px-4 py-4 text-foreground font-medium text-sm">{result.id}</td>
                     <td className="px-4 py-4 text-sm">
                       <div className="text-foreground">{result.scope}</div>
@@ -80,6 +115,13 @@ const HasilImplementasiPatch = () => {
                     </td>
                   </tr>
                 ))}
+                {filteredResults.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                      No results found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
