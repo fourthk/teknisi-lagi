@@ -29,10 +29,8 @@ const menuItems: MenuItem[] = [
     name: "Change Management",
     subItems: [
       { name: "Change Requests", path: "/change-management/daftar-laporan" },
-      { name: "Create Schedule", path: "/change-management/buat-jadwal" },
       { name: "Schedule", path: "/change-management/jadwal-implementasi" },
       { name: "Results", path: "/change-management/hasil-implementasi" },
-      { name: "Emergency Requests", path: "/change-management/laporan-darurat" },
     ],
   },
   {
@@ -42,6 +40,9 @@ const menuItems: MenuItem[] = [
       { name: "Schedule", path: "/patch-management/jadwal-implementasi" },
       { name: "Results", path: "/patch-management/hasil-implementasi" },
     ],
+  },
+  {
+      name: "Emergency Requests", path: "/change-management/laporan-darurat" ,
   },
   {
     name: "CMDB",

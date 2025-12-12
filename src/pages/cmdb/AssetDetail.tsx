@@ -1,320 +1,437 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, MoreVertical, ArrowLeft } from "lucide-react";
+import { Loader2, Plus, MoreVertical } from "lucide-react";
+
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
+
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
+  AlertDialogCancel,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
 import AddSpecificationDialog from "@/components/AddSpecificationDialog";
 import AddRelationDialog from "@/components/AddRelationDialog";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+// ==========================================================
+// Types
+// ==========================================================
+interface AssetFromAPI {
+  id: string;
+  kode_bmd: string;
+  nama_aset: string;
+  nomor_seri: string;
+  kategori: string;
+  sub_kategori: string;
+  kondisi: string;
+  nilai_perolehan: number | null;
+  tanggal_perolehan: string | null;
+  lokasi: string | null;
+  ruangan: string | null;
+  penanggung_jawab: string | null;
+}
+
+interface AssetSpecAPI {
+  id: string;
+  asset_id: string;
+  [key: string]: any;
+}
+
+interface AssetRelation {
+  relation_id: string;
+  bmd_id: string;
+  nama: string;
+  kategori: string;
+  sub_kategori: string;
+  relasi: string;
+}
+
+// ==========================================================
+// Component
+// ==========================================================
 const AssetDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  const [lokasi, setLokasi] = useState("Ruang Server Lt. 3");
-  const [pic, setPic] = useState("John Doe");
-  const [dinas, setDinas] = useState("Dinas TI");
-  
-  const [specifications, setSpecifications] = useState<Array<{ specification: string; value: string }>>([]);
+
+  const [asset, setAsset] = useState<AssetFromAPI | null>(null);
+  const [spec, setSpec] = useState<AssetSpecAPI | null>(null);
+  const [relations, setRelations] = useState<AssetRelation[]>([]);
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
   const [specDialogOpen, setSpecDialogOpen] = useState(false);
-  
-  const [relatedAssets, setRelatedAssets] = useState([
-    {
-      bmdId: "BMD-002",
-      nama: "Switch Cisco Catalyst",
-      relasi: "CONNECTED_TO",
-      kategori: "Network",
-      subKategori: "Switch"
-    },
-    {
-      bmdId: "BMD-003",
-      nama: "Storage NetApp FAS",
-      relasi: "DEPENDS_ON",
-      kategori: "Storage",
-      subKategori: "SAN"
-    }
-  ]);
   const [relationDialogOpen, setRelationDialogOpen] = useState(false);
-  const [deleteRelationId, setDeleteRelationId] = useState<string | null>(null);
 
-  const assetData = {
-    bmdId: id || "BMD-001",
-    nama: "Server Dell PowerEdge R740",
-    serialNumber: "SN123456789",
-    kategori: "Server",
-    subKategori: "Physical Server",
-    vendor: "Dell Technologies",
-    tanggalDiperoleh: "2023-01-15",
-    nilaiAset: 75000000,
-    kondisi: "Baik",
-    urlTerkait: "https://dell.com/server-docs",
-    fileTerkait: "/placeholder.svg",
-    catatan: "Server utama untuk aplikasi internal",
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  // Editable fields
+  const [lokasi, setLokasi] = useState("");
+  const [ruangan, setRuangan] = useState("");
+  const [pic, setPic] = useState("");
+
+  // ========================================================
+  // Fetch Detail
+  // ========================================================
+  const fetchDetail = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/cmdb/assets/${id}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const json = await res.json();
+      const a = json.data.asset;
+      const s = json.data.spec;
+
+      setAsset(a);
+      setSpec(s);
+
+      setLokasi(a.lokasi || "");
+      setRuangan(a.ruangan || "");
+      setPic(a.penanggung_jawab || "");
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  }, [id]);
+
+  // ========================================================
+  // Fetch Relations
+  // ========================================================
+  const fetchRelations = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/cmdb/assets/${id}/relations`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const json = await res.json();
+      const raw = json.data ?? [];
+
+      const mapped = raw.map((r: any) => ({
+        relation_id: r.id ?? r.relation_id,
+        bmd_id: r.kode_bmd ?? r.bmd_id,
+        nama: r.nama_aset ?? r.nama,
+        kategori: r.kategori,
+        sub_kategori: r.sub_kategori,
+        relasi: r.relasi ?? r.relation_type,
+      }));
+
+      setRelations(mapped);
+    } catch (err) {
+      setRelations([]);
+    }
+  }, [id]);
+
+  // ========================================================
+  // Load All
+  // ========================================================
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      await Promise.all([fetchDetail(), fetchRelations()]);
+      setLoading(false);
+    })();
+  }, []);
+
+  // ========================================================
+  // SAVE (Update asset)
+  // ========================================================
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+
+      await fetch(`${API_BASE}/cmdb/assets/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          lokasi,
+          ruangan,
+          penanggung_jawab: pic,
+        }),
+      });
+
+      await fetchDetail();
+    } catch (err) {
+      console.error("Save error:", err);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleAddSpecification = (specification: string, value: string) => {
-    setSpecifications([...specifications, { specification, value }]);
+  // ========================================================
+  // Add Specification
+  // ========================================================
+  const handleAddSpec = async (key: string, value: string) => {
+    await fetch(`${API_BASE}/cmdb/assets/${id}/spec`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ key, value }),
+    });
+
+    await fetchDetail();
   };
 
-  const handleAddRelation = (relation: any) => {
-    setRelatedAssets([...relatedAssets, relation]);
+  // ========================================================
+  // Add Relation
+  // ========================================================
+  const handleAddRelation = async (bmdId: string, relasi: string) => {
+    await fetch(`${API_BASE}/cmdb/assets/${id}/relations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        related_bmd_id: bmdId,
+        relation_type: relasi,
+      }),
+    });
+
+    await fetchRelations();
   };
 
-  const handleDeleteRelation = (bmdId: string) => {
-    setRelatedAssets(relatedAssets.filter(asset => asset.bmdId !== bmdId));
-    setDeleteRelationId(null);
+  // ========================================================
+  // DELETE Relation
+  // ========================================================
+  const handleDeleteRelation = async () => {
+    if (!deleteId) return;
+
+    await fetch(`${API_BASE}/cmdb/assets/${id}/relations/${deleteId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    setDeleteId(null);
+    await fetchRelations();
   };
+
+  // ========================================================
+  // RENDER
+  // ========================================================
+  if (loading || !asset) {
+    return (
+      <div className="min-h-[300px] flex justify-center items-center">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div>
+      {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-3">
-          <ArrowLeft 
-            className="h-6 w-6 text-foreground cursor-pointer hover:text-muted-foreground transition-colors" 
-            onClick={() => navigate(-1)}
-          />
-          <h1 className="text-3xl font-bold text-foreground">Detail CMDB</h1>
-        </div>
-        <Button 
-          className="bg-[#384E66] hover:bg-[#2F4256] text-white"
-          onClick={() => {/* Save changes */}}
-        >
-          Simpan
-        </Button>
-      </div>
+        <h1 className="text-3xl font-bold">Detail Aset</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Left Column - Asset Details */}
-        <div className="lg:col-span-2">
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">ID BMD</Label>
-                  <Input value={assetData.bmdId} readOnly className="bg-muted" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Nama Aset</Label>
-                  <Input value={assetData.nama} readOnly className="bg-muted" />
-                </div>
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            Kembali
+          </Button>
 
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Serial Number</Label>
-                  <Input value={assetData.serialNumber} readOnly className="bg-muted" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Kategori</Label>
-                  <Input value={assetData.kategori} readOnly className="bg-muted" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Sub Kategori</Label>
-                  <Input value={assetData.subKategori} readOnly className="bg-muted" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Lokasi</Label>
-                  <Input value={lokasi} onChange={(e) => setLokasi(e.target.value)} />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">PIC</Label>
-                  <Input value={pic} onChange={(e) => setPic(e.target.value)} />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Vendor</Label>
-                  <Input value={assetData.vendor} readOnly className="bg-muted" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Dinas</Label>
-                  <Input value={dinas} onChange={(e) => setDinas(e.target.value)} />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Tanggal Diperoleh</Label>
-                  <Input value={assetData.tanggalDiperoleh} readOnly className="bg-muted" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Nilai Aset</Label>
-                  <Input 
-                    value={`Rp ${assetData.nilaiAset.toLocaleString('id-ID')}`} 
-                    readOnly 
-                    className="bg-muted" 
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Kondisi</Label>
-                  <Input value={assetData.kondisi} readOnly className="bg-muted" />
-                </div>
-
-                {assetData.urlTerkait && (
-                  <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">URL Terkait</Label>
-                    <Input value={assetData.urlTerkait} readOnly className="bg-muted" />
-                  </div>
-                )}
-
-                {assetData.fileTerkait && (
-                  <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">File Terkait</Label>
-                    <a 
-                      href={assetData.fileTerkait} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline block"
-                    >
-                      Lihat disini
-                    </a>
-                  </div>
-                )}
-
-                <div className="md:col-span-2 space-y-2">
-                  <Label className="text-sm text-muted-foreground">Catatan</Label>
-                  <Input value={assetData.catatan} readOnly className="bg-muted" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Column - Specifications */}
-        <div>
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-foreground">Spesifikasi</h3>
-              </div>
-              
-              <div className="overflow-hidden rounded-lg border border-border">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-[#384E66] text-white">
-                      <th className="px-3 py-3 text-left font-semibold text-xs">Specification</th>
-                      <th className="px-3 py-3 text-left font-semibold text-xs">Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {specifications.length === 0 ? (
-                      <tr>
-                        <td colSpan={2} className="px-3 py-6 text-center text-sm text-muted-foreground">
-                          Belum ada spesifikasi
-                        </td>
-                      </tr>
-                    ) : (
-                      specifications.map((spec, index) => (
-                        <tr key={index} className="border-b border-border hover:bg-muted/50">
-                          <td className="px-3 py-3 text-foreground text-xs">{spec.specification}</td>
-                          <td className="px-3 py-3 text-foreground text-xs">{spec.value}</td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              
-              <Button 
-                variant="outline" 
-                className="w-full mt-4"
-                onClick={() => setSpecDialogOpen(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Tambah Spesifikasi
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Relasi Aset Table */}
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-foreground">Relasi Aset</h2>
-          <Button 
-            className="bg-[#384E66] hover:bg-[#2F4256] text-white"
-            onClick={() => setRelationDialogOpen(true)}
+          <Button
+            className="bg-[#384E66] text-white"
+            onClick={handleSave}
+            disabled={saving}
           >
-            <Plus className="h-4 w-4 mr-2" />
-            Tambah Relasi
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Simpan"}
           </Button>
         </div>
-        
-        <div className="bg-card rounded-lg border border-border overflow-hidden">
-          <div className="overflow-x-auto">
+      </div>
+
+      {/* LAYOUT */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* DETAIL */}
+        <div className="lg:col-span-2">
+          <Card>
+            <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <div>
+                <Label>ID BMD</Label>
+                <div className="bg-muted p-2 rounded">{asset.kode_bmd}</div>
+              </div>
+
+              <div>
+                <Label>Nama Aset</Label>
+                <div className="bg-muted p-2 rounded">{asset.nama_aset}</div>
+              </div>
+
+              <div>
+                <Label>Serial Number</Label>
+                <div className="bg-muted p-2 rounded">{asset.nomor_seri || "-"}</div>
+              </div>
+
+              <div>
+                <Label>Kategori</Label>
+                <div className="bg-muted p-2 rounded">{asset.kategori}</div>
+              </div>
+
+              <div>
+                <Label>Sub Kategori</Label>
+                <div className="bg-muted p-2 rounded">{asset.sub_kategori}</div>
+              </div>
+
+              {/* Editable */}
+              <div>
+                <Label>Lokasi</Label>
+                <Input value={lokasi} onChange={(e) => setLokasi(e.target.value)} />
+              </div>
+
+              <div>
+                <Label>PIC</Label>
+                <Input value={pic} onChange={(e) => setPic(e.target.value)} />
+              </div>
+
+              <div>
+                <Label>Ruangan</Label>
+                <Input value={ruangan} onChange={(e) => setRuangan(e.target.value)} />
+              </div>
+
+              <div>
+                <Label>Nilai Perolehan</Label>
+                <div className="bg-muted p-2 rounded">
+                  {asset.nilai_perolehan
+                    ? `Rp ${asset.nilai_perolehan.toLocaleString("id-ID")}`
+                    : "-"}
+                </div>
+              </div>
+
+              <div>
+                <Label>Kondisi</Label>
+                <div className="bg-muted p-2 rounded">{asset.kondisi}</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* SPEC */}
+        <div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold">Spesifikasi</h3>
+
+            <Button variant="outline" size="sm" onClick={() => setSpecDialogOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Tambah
+            </Button>
+          </div>
+
+          <div className="rounded border overflow-hidden">
             <table className="w-full">
               <thead>
                 <tr className="bg-[#384E66] text-white">
-                  <th className="px-4 py-4 text-left font-semibold text-sm">BMD ID</th>
-                  <th className="px-4 py-4 text-left font-semibold text-sm">Nama Aset</th>
-                  <th className="px-4 py-4 text-left font-semibold text-sm">Kategori</th>
-                  <th className="px-4 py-4 text-left font-semibold text-sm">Sub Kategori</th>
-                  <th className="px-4 py-4 text-left font-semibold text-sm">Tipe Relasi</th>
-                  <th className="px-4 py-4 text-left font-semibold text-sm">Aksi</th>
+                  <th className="px-3 py-3 text-left text-xs">Key</th>
+                  <th className="px-3 py-3 text-left text-xs">Value</th>
                 </tr>
               </thead>
+
               <tbody>
-                {relatedAssets.map((asset) => (
-                  <tr key={asset.bmdId} className="border-b border-border hover:bg-muted/50">
-                    <td className="px-4 py-4 text-foreground font-medium text-sm">{asset.bmdId}</td>
-                    <td className="px-4 py-4 text-foreground text-sm">{asset.nama}</td>
-                    <td className="px-4 py-4 text-foreground text-sm">{asset.kategori}</td>
-                    <td className="px-4 py-4 text-foreground text-sm">{asset.subKategori}</td>
-                    <td className="px-4 py-4 text-sm">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {asset.relasi}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-muted">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-card border-border">
-                          <DropdownMenuItem
-                            onClick={() => setDeleteRelationId(asset.bmdId)}
-                            className="cursor-pointer hover:bg-muted text-destructive"
-                          >
-                            Hapus
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                {!spec ? (
+                  <tr>
+                    <td colSpan={2} className="text-center py-4">
+                      Tidak ada spesifikasi
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  Object.entries(spec)
+                    .filter(([k, v]) => k !== "id" && k !== "asset_id" && v)
+                    .map(([k, v]) => (
+                      <tr key={k} className="border-b">
+                        <td className="px-3 py-3 text-xs">{k}</td>
+                        <td className="px-3 py-3 text-xs">{String(v)}</td>
+                      </tr>
+                    ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
+      {/* RELATION TABLE */}
+      <div className="mb-4 flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Relasi Aset</h2>
+
+        <Button className="bg-[#384E66] text-white" onClick={() => setRelationDialogOpen(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Tambah Relasi
+        </Button>
+      </div>
+
+      <div className="rounded border overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-[#384E66] text-white">
+              <th className="px-4 py-3 text-left">BMD ID</th>
+              <th className="px-4 py-3 text-left">Nama</th>
+              <th className="px-4 py-3 text-left">Kategori</th>
+              <th className="px-4 py-3 text-left">Sub Kategori</th>
+              <th className="px-4 py-3 text-left">Relasi</th>
+              <th className="px-4 py-3 text-left">Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {relations.map((r) => (
+              <tr key={r.relation_id} className="border-b hover:bg-muted/20">
+                <td className="px-4 py-3">{r.bmd_id}</td>
+                <td className="px-4 py-3">{r.nama}</td>
+                <td className="px-4 py-3">{r.kategori}</td>
+                <td className="px-4 py-3">{r.sub_kategori}</td>
+                <td className="px-4 py-3">{r.relasi}</td>
+                <td className="px-4 py-3">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => setDeleteId(r.relation_id)}
+                      >
+                        Hapus
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* DIALOGS */}
       <AddSpecificationDialog
         open={specDialogOpen}
         onOpenChange={setSpecDialogOpen}
-        onAdd={handleAddSpecification}
+        onAdd={handleAddSpec}
       />
 
       <AddRelationDialog
@@ -323,20 +440,16 @@ const AssetDetail = () => {
         onAdd={handleAddRelation}
       />
 
-      <AlertDialog open={!!deleteRelationId} onOpenChange={() => setDeleteRelationId(null)}>
+      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Relasi</AlertDialogTitle>
-            <AlertDialogDescription>
-              Apakah Anda yakin ingin menghapus relasi aset ini? Tindakan ini tidak dapat dibatalkan.
-            </AlertDialogDescription>
+            <p>Apakah Anda yakin ingin menghapus relasi ini?</p>
           </AlertDialogHeader>
+
           <AlertDialogFooter>
             <AlertDialogCancel>Batal</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteRelationId && handleDeleteRelation(deleteRelationId)}
-              className="bg-destructive hover:bg-destructive/90"
-            >
+            <AlertDialogAction className="bg-destructive" onClick={handleDeleteRelation}>
               Hapus
             </AlertDialogAction>
           </AlertDialogFooter>
